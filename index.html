@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fce6f0;
+            margin: 0;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #ff66b2;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .button {
+            padding: 20px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .yes {
+            background-color: #ff66b2;
+            color: white;
+        }
+
+        .yes:hover {
+            background-color: #ff3385;
+        }
+
+        .no {
+            background-color: #ffcccc;
+            color: #ff66b2;
+        }
+
+        .no:hover {
+            background-color: #ff9999;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #ff66b2;
+        }
+
+        .response {
+            display: none;
+            font-size: 1.5rem;
+            margin-top: 30px;
+            color: #ff66b2;
+        }
+
+        /* Position the NO button to the corner */
+        .no.corner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Will you be my valentine, Vienna?</h1>
+        
+        <div class="buttons">
+            <button class="button yes" id="yesButton">YES</button>
+            <button class="button no" id="noButton">NO</button>
+        </div>
+        
+        <div class="response" id="responseMessage">
+            <p>Yay! I'm so happy! 😊</p>
+        </div>
+        
+        <div class="footer">
+            Made by Aki
+        </div>
+    </div>
+
+    <script>
+        let noButtonClickCount = 0; // To track how many times the NO button has been clicked
+
+        document.getElementById("yesButton").addEventListener("click", function() {
+            // Hide the initial buttons
+            document.querySelector(".buttons").style.display = "none";
+            
+            // Show the response message
+            document.getElementById("responseMessage").style.display = "block";
+        });
+
+        document.getElementById("noButton").addEventListener("click", function() {
+            noButtonClickCount++;
+
+            if (noButtonClickCount === 1) {
+                // Move the NO button to the bottom right corner after the first click
+                this.classList.add("corner");
+            } else if (noButtonClickCount === 2) {
+                // After the second click, make the NO button disappear
+                this.style.display = "none";
+            }
+        });
+    </script>
+
+</body>
+</html>
