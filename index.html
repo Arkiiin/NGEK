@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine's Day</title>
+    <title>Will You Be My Valentine?</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -11,124 +11,141 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #fce6f0;
-            margin: 0;
-            position: relative;
-        }
-
-        .container {
+            background-color: #ffe6f2;
+            flex-direction: column;
             text-align: center;
-            background-color: white;
-            padding: 50px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 500px;
+            overflow: hidden;
         }
 
         h1 {
-            font-size: 2rem;
-            color: #ff66b2;
-            margin-bottom: 30px;
+            color: #d63384;
+            font-size: 2em;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .gif-container img {
+            width: 200px;
+            display: none;
         }
 
         .buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
+            margin-top: 20px;
+            position: relative;
         }
 
-        .button {
-            padding: 20px 40px;
-            font-size: 1.2rem;
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
             border: none;
-            border-radius: 25px;
             cursor: pointer;
-            transition: 0.3s;
+            margin: 10px;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            position: absolute;
         }
 
-        .yes {
-            background-color: #ff66b2;
+        #yesButton {
+            background-color: #28a745;
             color: white;
         }
 
-        .yes:hover {
-            background-color: #ff3385;
+        #noButton {
+            background-color: #dc3545;
+            color: white;
         }
 
-        .no {
-            background-color: #ffcccc;
-            color: #ff66b2;
+        @keyframes heart-fall {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
         }
 
-        .no:hover {
-            background-color: #ff9999;
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 20px;
+            animation: heart-fall 2s linear infinite;
         }
 
         .footer {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: #ff66b2;
+            margin-top: 50px;
+            font-size: 14px;
+            color: #555;
         }
-
-        .response {
-            display: none;
-            font-size: 1.5rem;
-            margin-top: 30px;
-            color: #ff66b2;
-        }
-
-        /* Position the NO button to the corner */
-        .no.corner {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-        }
-
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Will you be my valentine, Vienna?</h1>
-        
+        <h1>Will you be my Valentine? 💖</h1>
+        <div class="gif-container">
+            <img id="bearGif" src="https://gifdb.com/images/high/cute-love-bear-roses-ou7gxsxmq5lsg7l4.gif" alt="Cute Bear">
+        </div>
         <div class="buttons">
-            <button class="button yes" id="yesButton">YES</button>
-            <button class="button no" id="noButton">NO</button>
-        </div>
-        
-        <div class="response" id="responseMessage">
-            <p>Yay! I'm so happy! 😊</p>
-        </div>
-        
-        <div class="footer">
-            Made by Aki
+            <button id="yesButton">Yes</button>
+            <button id="noButton">No</button>
         </div>
     </div>
 
+    <!-- Audio Element -->
+    <audio id="yesAudio" src="https://drive.google.com/uc?export=download&id=19Vu1pZLe7GgfXRCIBzRrNO5pEphTST4x"></audio>
+
     <script>
-        let noButtonClickCount = 0; // To track how many times the NO button has been clicked
+        document.addEventListener("DOMContentLoaded", function () {
+            const noButton = document.getElementById("noButton");
+            const yesButton = document.getElementById("yesButton");
+            const bearGif = document.getElementById("bearGif");
+            const yesAudio = document.getElementById("yesAudio");
 
-        document.getElementById("yesButton").addEventListener("click", function() {
-            // Hide the initial buttons
-            document.querySelector(".buttons").style.display = "none";
-            
-            // Show the response message
-            document.getElementById("responseMessage").style.display = "block";
-        });
+            let noCount = 0;
+            const phrases = [
+                "No", "Are you sure?", "Really sure?", "Pookie🤨", 
+                "Don't do this to me 😭(Weirdo)", "I'm gonna cry... 😢", "Come on Viane, you know better than this!"
+            ];
 
-        document.getElementById("noButton").addEventListener("click", function() {
-            noButtonClickCount++;
+            noButton.addEventListener("mouseover", function () {
+                noCount++;
 
-            if (noButtonClickCount === 1) {
-                // Move the NO button to the bottom right corner after the first click
-                this.classList.add("corner");
-            } else if (noButtonClickCount === 2) {
-                // After the second click, make the NO button disappear
-                this.style.display = "none";
-            }
+                // Change text
+                noButton.textContent = phrases[Math.min(noCount, phrases.length - 1)];
+
+                // Move button randomly
+                const x = Math.random() * (window.innerWidth - 150);
+                const y = Math.random() * (window.innerHeight - 150);
+                noButton.style.left = `${x}px`;
+                noButton.style.top = `${y}px`;
+            });
+
+            yesButton.addEventListener("click", function () {
+                document.querySelector("h1").textContent = "Yay! See you on Valentine's Day! 💘";
+                bearGif.style.display = "block";
+                yesButton.style.display = "none";
+                noButton.style.display = "none";
+
+                // Play the audio
+                yesAudio.play();
+
+                // Heart animation
+                setInterval(() => {
+                    const heart = document.createElement("div");
+                    heart.classList.add("heart");
+                    heart.textContent = "❤️";
+                    heart.style.left = `${Math.random() * 100}vw`;
+                    heart.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 2000);
+                }, 200);
+            });
         });
     </script>
+
+    <!-- Footer -->
+    <div class="footer">
+        Made by your Geloy🦖
+    </div>
 
 </body>
 </html>
